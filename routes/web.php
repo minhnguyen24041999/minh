@@ -20,70 +20,35 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
        return view('welcome');
 });
-Route::get('users', function(){
-	$users = factory(User::class, 10)->make()->toArray();
-	$users = User::all()->toArray();
-	return view('starter',[
-       'users' => $users
-	]);
-})->name('users.index');
-Route::get('post', function(){
-	$posts = factory(Post::class, 10)->make()->ToArray();
-	return view('post', ['posts' => $posts]);
+Route::group([
+     'prefix' => 'users',
+	 'name' => 'users.',], function(){
+	// Routes
 });
 
+Route::get('users', 'UserController@index')->name('users.index');
+
 Route::get('posts', function() {
-	$posts = factory(Post::class, 10)
-	->make()
-	->toArray();
-	$posts = Product::all()->toArray();
+	$posts = factory(Post::class, 10)->make()->toArray();
+	$posts = Post::all();//->toArray();
+	foreach ($posts as $post){
+		$post->user;
+	}
 	
+	$posts = $posts->toArray();
     	return view('post',[
-    		'posts' =>$posts
+    		'posts' => $posts
     	]);  	
 });
 
-Route::view('users/create', 'users/create')->name('users.create');
+Route::get('users/create', 'UserController@create')->name('users.create');
 
-Route::post('users/store', function (Request $request){
-	$data = ($request->all());
-	$user = User::create ([
-		'name' => $data['name'],
-		'email' => $data['email'],
-		'birthday' => $data['birthday'],
-		'password' => bcrypt('123456'),
+Route::post('users/store', 'UserController@store')->name('users.store');
 
-	]);
-	
-	return redirect()->route('users.index');
-})->name('users.store');
+Route::get('users/{id}/edit', 'UserController@edit')->name('users.edit');
 
-Route::get('users/update/{id}', function ($id){
-	$user = User::find ($id);
-	// $user->name = 'Trungnd';
-	// $user->email = 'Trung@example.com';
-	// $user->save();
+Route::post('users/{id}/update', 'UserController@update')->name('users.update');
 
-	$user->update([
-		'name' => 'abc',
-	]);
+Route::get('users/delete/{id}', 'UserController@delete')->name('users.delete');
 
-	return redirect()->route('users.index');
-});
-
-Route::get('users/delete/{id}', function ($id){
-	$user = User::find ($id);
-
-	$user->delete();
-
-	return redirect()->route('users.index');
-});
-Route::get('users/{id}', function($id) {
-
-	 $user = User::find($id);
-	 dd($user);
-
- //    	return view('starter',[
- //    		'users' =>$users
- //    	]);  	
-})->name('users.show');
+Route::get('users/{id}', 'UserController@show')->name('users.show');

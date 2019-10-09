@@ -32,6 +32,7 @@
       <thead>
         <th>User_ID</th>
         <th>Content</th>
+        <th>Name</th>
       </thead>
 
       <tbody>
@@ -39,6 +40,7 @@
           <tr>
             <td>{{$post['user_id']}}</td>
             <td>{{$post['content']}}</td>
+            <td>{{$post['user']['name']}}</td>
           </tr>
         @endforeach
         @endif

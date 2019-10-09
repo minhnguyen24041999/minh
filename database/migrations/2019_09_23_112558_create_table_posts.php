@@ -17,6 +17,7 @@ class CreateTablePosts extends Migration
             $table->bigIncrements('id');
             $table->string('user_id');
             $table->text('content');
+            $table->integer('like')->default(0);
             $table->timestamps();
         });
     }

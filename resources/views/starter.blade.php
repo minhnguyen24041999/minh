@@ -1,6 +1,6 @@
 @extends('layouts')
 
-@section('title', 'Starter')
+@section('title', 'Minh')
 
 @section('contents')
  <div class="content-wrapper">
@@ -33,7 +33,9 @@
       <thead>
         <th>Name</th>
         <th>Email</th>
+        <th>Address</th>
         <th>Birthday</th>
+        <th>Posts</th>
       </thead>
 
       <tbody>
@@ -41,9 +43,11 @@
           <tr>
             <td>{{$user['name']}}</td>
             <td>{{$user['email']}}</td>
+            <td>{{$user['address']}}</td>
             <td>{{$user['birthday']}}</td>
-            <td><a href="#" class="btn btn-primary">Update</a>
-            <td><a href="#" class="btn btn-danger">Delete</a>
+            <td>{{ count($user['posts']) }}</td>
+            <td><a href="{{ url('users/' . $user->id . '/edit') }}" class="btn btn-primary">Update</a>
+            <td><a href="{{ route('users.delete', ['id' => $user->id])}}" class="btn btn-danger" title="">Remove</a>
           </tr>
         @endforeach
         @endif
